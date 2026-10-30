@@ -1,0 +1,26 @@
+-- TEST: ensure one regulator in Sakharov's shop without restocking other goods.
+local recent={}
+local section='smm_slowmo_controller'
+function inventory_shown(name)
+    if name ~= 'UIInventory' then return end
+    pcall(function()
+        local gui=ui_inventory and ui_inventory.GUI
+        if not gui or gui.mode ~= 'trade' then return end
+        local npc=gui:GetPartner()
+        if not npc then return end
+        local profile=trade_manager.get_trade_profile(npc:id(),'cfg_ltx')
+        if type(profile) ~= 'string' then return end
+        local basename=profile:gsub('\\','/'):lower():match('([^/]+)$')
+        if basename ~= 'trade_ecolog_sakharov.ltx' then return end
+        if npc:object(section) or not system_ini():section_exist(section) then return end
+        local now=time_global()
+        if recent[npc:id()] and now>=recent[npc:id()] and now-recent[npc:id()]<5000 then return end
+        local created=alife_create_item(section,npc)
+        if created then recent[npc:id()]=now end
+        if gui.On_Item_Update then gui:On_Item_Update() end
+    end)
+end
+function on_game_start()
+    recent={}
+    RegisterScriptCallback('GUI_on_show',inventory_shown)
+end

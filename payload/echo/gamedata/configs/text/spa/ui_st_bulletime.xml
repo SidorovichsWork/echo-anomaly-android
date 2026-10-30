@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='utf-8'?>
+<string_table>
+  <string id="ui_mcm_menu_bullettime">
+    <text>Regulador de resonancia «Eco»</text>
+  </string>
+  <string id="ui_mcm_bullettime_mobile_help">
+    <text>Carga una partida y usa el aparato desde un acceso rápido de medicina/comida, o actívalo aquí en MCM. Eco no necesita el mod Slow Motion original.</text>
+  </string>
+  <string id="ui_mcm_bullettime_mobile_start">
+    <text>ACTIVAR cámara lenta</text>
+  </string>
+  <string id="ui_mcm_bullettime_mobile_stop">
+    <text>DESACTIVAR / restaurar velocidad</text>
+  </string>
+  <string id="ui_mcm_bullettime_mobile_start_desc">
+    <text>Solicita activar el efecto al volver a la partida. Requiere energía.</text>
+  </string>
+  <string id="ui_mcm_bullettime_mobile_stop_desc">
+    <text>Solicita velocidad normal al volver a la partida.</text>
+  </string>
+  <string id="ui_mcm_bullettime_screenfx">
+    <text>Efectos visuales</text>
+  </string>
+  <string id="ui_mcm_bullettime_screenfx_desc">
+    <text>Efectos opcionales; apagados inicialmente por compatibilidad.</text>
+  </string>
+  <string id="ui_mcm_bullettime_drainrate">
+    <text>Consumo de energía</text>
+  </string>
+  <string id="ui_mcm_bullettime_drainrate_desc">
+    <text>Energía consumida mientras la cámara lenta está activa.</text>
+  </string>
+  <string id="ui_mcm_bullettime_mintime">
+    <text>Factor de tiempo</text>
+  </string>
+  <string id="ui_mcm_bullettime_mintime_desc">
+    <text>0.4 equivale aproximadamente al 40 por ciento de la velocidad normal.</text>
+  </string>
+  <string id="ui_mcm_title_bullettime">
+    <text>Regulador de resonancia «Eco»</text>
+  </string>
+  <string id="ui_mcm_bullettime_mobile_double_torch">
+    <text>Control desde el inventario</text>
+  </string>
+  <string id="ui_mcm_bullettime_mobile_get_controller">
+    <text>Obtener controlador de cámara lenta</text>
+  </string>
+  <string id="ui_mcm_bullettime_mobile_remove_controller">
+    <text>Retirar controlador antes de desinstalar</text>
+  </string>
+  <string id="st_smm_slowmo_controller">
+    <text>Regulador de resonancia «Eco»</text>
+  </string>
+  <string id="st_smm_slowmo_controller_descr">
+    <text>Regulador experimental ensamblado por los científicos de Yantar después de que un detector recuperado registrara dos veces la misma descarga anómala, separadas por una fracción de segundo. Un fragmento de Bengala confinado y una bobina modificada acoplan brevemente al operador con esa resonancia. Aún discuten si el mundo se ralentiza o si la mente se adelanta. La fatiga no admite discusión. Las notas salieron del búnker y algunos técnicos aprendieron a reconstruir el circuito. Asígnalo a un acceso rápido de medicina/comida: un uso activa y el siguiente desactiva. Reutilizable; consume energía mientras está activo. Solo el profesor Sakharov vende este aparato. No se puede fabricar. También puedes obtenerlo desde MCM para pruebas. El uso excesivo provoca un malestar temporal por resonancia. Configúralo en MCM.</text>
+  </string>
+  <string id="ui_mcm_bullettime_mobile_touch_help">
+    <text>Carga una partida, obtén el aparato aquí o cómpraselo al profesor Sakharov y asígnalo a un acceso rápido de medicina/comida. Un uso activa el efecto y el siguiente lo desactiva. Mantén Eco instalado mientras tu partida contenga el aparato.</text>
+  </string>
+  <string id="ui_smm_status_load_game">
+    <text>Primero carga una partida</text>
+  </string>
+  <string id="ui_smm_status_already_owned">
+    <text>El controlador ya está en la mochila</text>
+  </string>
+  <string id="ui_smm_status_missing_section">
+    <text>ERROR: definición del objeto no cargada</text>
+  </string>
+  <string id="ui_smm_status_requested">
+    <text>Solicitado: cierra MCM y revisa la mochila</text>
+  </string>
+  <string id="ui_smm_status_spawn_error">
+    <text>ERROR: falló la entrega; diagnóstico guardado</text>
+  </string>
+<string id="ui_mcm_bullettime_overload_help"><text>Sobrecarga de Eco: el uso repetido o prolongado provoca los efectos de cámara y pantalla de la embriaguez. Por defecto: 4 activaciones en 30 segundos O 8 segundos continuos; recuperación de 20 segundos tras el último disparador. Se cuentan segundos de juego. Cada disparador renueva la recuperación; el uso prolongado mantiene los síntomas. Puedes desactivar cámara y pantalla por separado.</text></string><string id="ui_mcm_bullettime_overload"><text>Activar sobrecarga</text></string><string id="ui_mcm_bullettime_overload_repeated"><text>Sobrecarga por activaciones repetidas</text></string><string id="ui_mcm_bullettime_overload_count"><text>Activaciones necesarias</text></string><string id="ui_mcm_bullettime_overload_window"><text>Ventana de activaciones (segundos)</text></string><string id="ui_mcm_bullettime_overload_sustained"><text>Sobrecarga por uso continuo</text></string><string id="ui_mcm_bullettime_overload_seconds"><text>Uso continuo hasta sobrecarga (segundos)</text></string><string id="ui_mcm_bullettime_overload_recovery"><text>Recuperación tras último disparador (segundos)</text></string><string id="ui_mcm_bullettime_overload_camera"><text>Tambaleo de cámara</text></string><string id="ui_mcm_bullettime_overload_screen"><text>Efecto de pantalla de embriaguez</text></string><string id="ui_mcm_bullettime_overload_intensity"><text>Intensidad del efecto de pantalla</text></string></string_table>

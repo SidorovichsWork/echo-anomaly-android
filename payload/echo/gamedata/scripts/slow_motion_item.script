@@ -1,0 +1,107 @@
+-- Reusable quick-slot item. Veto native eating ONLY for our own item.
+local section = "smm_slowmo_controller"
+local installed = false
+local last_id = nil
+local last_use = nil
+
+local function log(message)
+    if printf then printf("[SlowMotionMobile] "..message) end
+    if io and io.open then
+        pcall(function()
+            local file=io.open("/storage/emulated/0/Download/S.T.A.L.K.E.R. Anomaly/openxray/appdata/smm_controller_diagnostic.txt","a")
+            if file then file:write("[SMM 0.5.2] "..message.."\n");file:close() end
+        end)
+    end
+end
+
+local function is_controller(obj)
+    if obj == nil then return false end
+    local ok,name = pcall(function() return obj:section() end)
+    return ok and name == section
+end
+
+local function ready()
+    return db and db.actor and db.actor:alive()
+end
+
+local function use_controller(item)
+    if not ready() then return end
+    local ok,owner_id = pcall(function() return item:parent():id() end)
+    if not ok or owner_id ~= db.actor:id() then return end
+    local now = time_global()
+    local id = item:id()
+    -- Some inventory/native paths ask twice for the same use. Never toggle twice.
+    if last_id == id and last_use and now >= last_use and now-last_use < 250 then return end
+    last_id,last_use = id,now
+    if bullet_time_mcm.slowmo_flag == 1 then
+        bullet_time_mcm.request_stop()
+    else
+        bullet_time_mcm.request_start()
+    end
+    log("controller used: native consumption vetoed")
+end
+
+local function install_bridge()
+    if installed then return end
+    local original = _G.CInventory__eat
+    if type(original) ~= "function" then
+        log("quick-slot bridge unavailable: CInventory__eat missing")
+        return
+    end
+    _G.CInventory__eat = function(first,...)
+        local second = select(1,...)
+        local item = nil
+        if is_controller(first) then item = first
+        elseif is_controller(second) then item = second end
+        if item then
+            local ok,err = pcall(use_controller,item)
+            if not ok then log("controller callback failed: "..tostring(err)) end
+            -- No consumption, healing, radiation change or medical animation.
+            return false
+        end
+        -- Preserve the exact signature and result of every unrelated item.
+        return original(first,...)
+    end
+    installed = true
+    log("reusable quick-slot controller v0.5 loaded")
+end
+
+function give_controller()
+    if not ready() then log("load a game before requesting the controller"); return "ui_smm_status_load_game" end
+    local ok,result = pcall(function()
+        local existing = db.actor:object(section)
+        if existing then log("controller already in inventory"); return "ui_smm_status_already_owned" end
+        if not system_ini():section_exist(section) then
+            log("controller section missing: check items/items/items_*.ltx loading")
+            return "ui_smm_status_missing_section"
+        end
+        alife_create_item(section,db.actor)
+        log("controller requested for actor inventory")
+        return "ui_smm_status_requested"
+    end)
+    if not ok then log("cannot grant controller: "..tostring(result));return "ui_smm_status_spawn_error" end
+    return result
+end
+
+function give_controller_ui(gui)
+    local id=give_controller()
+    local caption=gui and gui._Cap and gui._Cap.bullettime_mobile_get_controller
+    if caption then caption:TextControl():SetText(game.translate_string(id)) end
+end
+
+function remove_controller()
+    if not ready() then return end
+    local ok,err = pcall(function()
+        bullet_time_mcm.end_slowmo()
+        local item = db.actor:object(section)
+        if item then alife_release(item) end
+        log("controller removal requested; clear its quick slot and save before uninstalling")
+    end)
+    if not ok then log("cannot remove controller: "..tostring(err)) end
+end
+
+function on_game_start()
+    last_id,last_use = nil,nil
+    install_bridge()
+    RegisterScriptCallback("actor_on_first_update",install_bridge)
+end

@@ -1,0 +1,2 @@
+-- v0.5: inventory button experiment retired in favor of a dedicated quick-slot item.
+function on_game_start() end

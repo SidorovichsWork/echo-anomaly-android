@@ -1,0 +1,65 @@
+-- Sidorovich's Workshop: standalone mobile compatibility shim for MCM.
+-- Contains no copy of ui_mcm.script. Requires MCM to be installed separately.
+local pressed = {}
+local installed = false
+local original_press, original_release
+local wrapped_press, wrapped_release
+
+local function down(key)
+    if key == nil then return false end
+    local native = key_state
+    if type(native) == 'function' then
+        local value = native(key)
+        return value == true or (type(value) == 'number' and value ~= 0)
+    end
+    return pressed[key] == true
+end
+
+local function refresh()
+    local keys = DIK_keys or {}
+    ui_mcm.MOD_SHIFT = down(keys.DIK_LSHIFT) or down(keys.DIK_RSHIFT)
+    ui_mcm.MOD_CTRL = down(keys.DIK_LCONTROL) or down(keys.DIK_RCONTROL)
+    ui_mcm.MOD_ALT = down(keys.DIK_LMENU) or down(keys.DIK_RMENU)
+    ui_mcm.MOD_NONE = not (ui_mcm.MOD_SHIFT or ui_mcm.MOD_CTRL or ui_mcm.MOD_ALT)
+end
+
+local function install()
+    if installed then return true end
+    if not ui_mcm or type(ui_mcm.update_modifier_key_states) ~= 'function'
+        or type(ui_mcm.on_key_press) ~= 'function'
+        or type(ui_mcm.on_key_release) ~= 'function' then return false end
+    original_press,original_release = ui_mcm.on_key_press,ui_mcm.on_key_release
+    wrapped_press = function(key,...)
+        if key ~= nil then pressed[key] = true end
+        return original_press(key,...)
+    end
+    wrapped_release = function(key,...)
+        if key ~= nil then pressed[key] = nil end
+        return original_release(key,...)
+    end
+    -- Original handlers retain their own hold/double-tap cleanup, but their
+    -- call to update_modifier_key_states resolves to this safe implementation.
+    ui_mcm.update_modifier_key_states = refresh
+    ui_mcm.on_key_press,ui_mcm.on_key_release = wrapped_press,wrapped_release
+    installed = true
+    refresh()
+    return true
+end
+
+-- axr_main loads all modules before invoking their on_game_start callbacks.
+-- Installing here ensures MCM registers the wrapped handlers regardless of
+-- callback-start order. Rebinding below also supports late loading.
+install()
+
+function on_game_start()
+    pressed = {}
+    if not install() then
+        if printf then printf('[Sidorovich MCM Mobile] Install original MCM first; unsupported or absent MCM API.') end
+        return
+    end
+    UnregisterScriptCallback('on_key_press',original_press)
+    UnregisterScriptCallback('on_key_release',original_release)
+    RegisterScriptCallback('on_key_press',wrapped_press)
+    RegisterScriptCallback('on_key_release',wrapped_release)
+    refresh()
+end

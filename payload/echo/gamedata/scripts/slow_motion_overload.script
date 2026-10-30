@@ -1,0 +1,103 @@
+-- Echo overload uses the vanilla alcohol assets with private effector IDs.
+-- Never changes alcohol, radiation, health, or another mod's effectors.
+local pp_id, cam_id = 48731, 48732
+local starts, elapsed, continuous, remaining = {}, 0, 0, 0
+local pp_active, cam_active = false, false
+local cfg = {}
+
+local function remove_effects()
+    if pp_active then pcall(function() level.remove_pp_effector(pp_id) end) end
+    if cam_active then pcall(function() level.remove_cam_effector(cam_id) end) end
+    pp_active,cam_active = false,false
+end
+
+function reset()
+    remove_effects()
+    starts,elapsed,continuous,remaining = {},0,0,0
+end
+
+function configure(get)
+    local function number(key,def,lo,hi)
+        return math.max(lo,math.min(hi,tonumber(get(key,def)) or def))
+    end
+    cfg.enabled = get('overload',true) == true
+    cfg.repeated = get('overload_repeated',true) == true
+    cfg.sustained = get('overload_sustained',true) == true
+    cfg.camera = get('overload_camera',true) == true
+    cfg.screen = get('overload_screen',true) == true
+    cfg.count = math.floor(number('overload_count',4,2,15))
+    cfg.window = number('overload_window',30,5,120)
+    cfg.limit = number('overload_seconds',8,3,120)
+    cfg.duration = number('overload_recovery',20,2,120)
+    cfg.intensity = number('overload_intensity',0.6,0.1,1)
+    if not cfg.enabled then reset();return end
+    if not cfg.camera and cam_active then
+        pcall(function() level.remove_cam_effector(cam_id) end);cam_active=false
+    end
+    if not cfg.screen and pp_active then
+        pcall(function() level.remove_pp_effector(pp_id) end);pp_active=false
+    end
+end
+
+local function prune()
+    while starts[1] and elapsed-starts[1] > cfg.window do table.remove(starts,1) end
+end
+
+function activated()
+    if not cfg.enabled then return end
+    prune()
+    if cfg.repeated then
+        starts[#starts+1]=elapsed
+        if #starts >= cfg.count then remaining=cfg.duration end
+        -- Bounded memory, even if settings change during play.
+        while #starts > 15 do table.remove(starts,1) end
+    end
+end
+
+function update(dt,active,ready)
+    if not ready then reset();return end
+    if not cfg.enabled then return end
+    -- dt supplied by the core is gameplay time, excluding long suspension gaps.
+    dt=math.max(0,math.min(0.1,dt or 0))
+    elapsed=elapsed+dt
+    prune()
+    remaining=math.max(0,remaining-dt)
+    if active and cfg.sustained then
+        continuous=continuous+dt
+        if continuous >= cfg.limit then remaining=cfg.duration end
+    else continuous=0 end
+    if remaining <= 0 then remove_effects();return end
+    if cfg.camera and not cam_active then
+        cam_active=pcall(function()
+            level.add_cam_effector('camera_effects\\drunk.anm',cam_id,true,'')
+        end)
+    end
+    if cfg.screen then
+        if not pp_active then
+            pp_active=pcall(function() level.add_pp_effector('alcohol.ppe',pp_id,true) end)
+        end
+        if pp_active then pcall(function()
+            level.set_pp_effector_factor(pp_id,cfg.intensity*math.min(1,remaining/2))
+        end) end
+    end
+end
+
+-- Save only durations, never wall-clock timestamps or engine objects.
+function save_state(data)
+    local ages={}
+    for i,t in ipairs(starts) do ages[i]=math.max(0,elapsed-t) end
+    data.smm_echo_overload={remaining=remaining,continuous=continuous,ages=ages}
+end
+
+function load_state(data)
+    reset()
+    local s=data.smm_echo_overload
+    if not cfg.enabled or type(s) ~= 'table' then return end
+    remaining=math.max(0,math.min(cfg.duration,tonumber(s.remaining) or 0))
+    continuous=math.max(0,math.min(cfg.limit,tonumber(s.continuous) or 0))
+    for _,age in ipairs(type(s.ages)=='table' and s.ages or {}) do
+        if #starts < 15 and type(age)=='number' and age>=0 and age<=cfg.window then
+            starts[#starts+1]=-age
+        end
+    end
+end

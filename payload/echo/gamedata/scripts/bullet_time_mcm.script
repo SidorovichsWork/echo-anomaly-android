@@ -1,0 +1,181 @@
+-- Echo 0.8.1: standalone Android regulator. No original Slow Motion addon required.
+-- Retain historical module/MCM IDs for save and settings compatibility.
+
+slowmo_flag = 0
+time_factor = 1
+local target_speed = 0.4
+local drain_rate = 1
+local screenfx = false
+local pending = nil
+local previous_tick = nil
+local effects_active = false
+local overload_tick = nil
+
+local function log(message)
+    if printf then printf("[SlowMotionMobile] " .. message) end
+end
+
+local function actor_ready()
+    return db and db.actor and db.actor:alive()
+end
+
+local function set_speed(value)
+    local ok, err = pcall(function()
+        get_console():execute("time_factor " .. tostring(value))
+    end)
+    if not ok then log("time_factor failed: " .. tostring(err)) end
+    return ok
+end
+
+local function clear_effects()
+    if not effects_active then return end
+    for _, id in ipairs({1996, 1995, 1994, 1993}) do
+        pcall(function() level.remove_pp_effector(id) end)
+    end
+    effects_active = false
+end
+
+local function play_sound(name)
+    pcall(function()
+        local snd = sound_object("echo\\" .. name)
+        snd:play_at_pos(db.actor, vector():set(0,0,0), 0, sound_object.s2d)
+    end)
+end
+
+function end_slowmo()
+    pending = nil
+    slowmo_flag = 0
+    time_factor = 1
+    previous_tick = nil
+    clear_effects()
+    set_speed(1)
+    if actor_ready() then play_sound("slowmo_off") end
+    log("normal speed requested")
+end
+
+local function begin_slowmo()
+    if not actor_ready() or db.actor.power <= 0.21 then return end
+    if not set_speed(target_speed) then return end
+    slowmo_flag = 1
+    if slow_motion_overload then slow_motion_overload.activated() end
+    time_factor = target_speed
+    previous_tick = nil
+    play_sound("slowmo_on")
+    if screenfx then
+        effects_active = true
+        local ok, err = pcall(function()
+            level.add_pp_effector("gravi.ppe",1996,true)
+            level.add_pp_effector("brighten.ppe",1995,true)
+            level.add_pp_effector("contrast.ppe",1994,true)
+            level.add_pp_effector("psychic.ppe",1993,true)
+            level.set_pp_effector_factor(1993,0.2)
+            level.set_pp_effector_factor(1995,1.4)
+            level.set_pp_effector_factor(1994,8)
+            level.set_pp_effector_factor(1996,100)
+        end)
+        if not ok then clear_effects(); log("screen effects unavailable: " .. tostring(err)) end
+    end
+    log("slow motion requested: " .. tostring(target_speed))
+end
+
+-- Buttons only queue a command; changing settings cannot accidentally enable slow motion.
+function request_start() pending = "start" end
+function request_stop() pending = "stop" end
+
+function slowmo_on_update()
+    local tick=time_global()
+    local dt=0
+    if overload_tick and tick>=overload_tick and tick-overload_tick<=250 then
+        dt=math.min(100,tick-overload_tick)/1000
+    end
+    overload_tick=tick
+    if not actor_ready() then
+        if slow_motion_overload then slow_motion_overload.reset() end
+        pending = nil
+        if slowmo_flag == 1 then end_slowmo() end
+        return
+    end
+    if pending then
+        local action = pending
+        pending = nil
+        if action == "stop" then end_slowmo()
+        elseif slowmo_flag == 0 then begin_slowmo() end
+    end
+    if slow_motion_overload then slow_motion_overload.update(dt,slowmo_flag==1,true) end
+    if slowmo_flag ~= 1 then return end
+    if db.actor.power <= 0.21 then end_slowmo(); return end
+    local now = time_global()
+    -- Ignore time spent in menus and long suspension gaps; do not drain on the first frame.
+    if previous_tick then
+        local elapsed = math.max(0, math.min(100, now - previous_tick)) / 1000
+        if elapsed > 0 then db.actor:change_power(-0.072 * drain_rate * elapsed) end
+        if db.actor.power <= 0.21 then end_slowmo(); return end
+    end
+    previous_tick = now
+end
+
+
+local function option(name, fallback)
+    if not ui_mcm then return fallback end
+    local ok, value = pcall(function() return ui_mcm.get("bullettime/" .. name) end)
+    if not ok or value == nil then return fallback end
+    return value
+end
+
+function loadsettings()
+    local speed = tonumber(option("mintime",0.4)) or 0.4
+    target_speed = math.max(0.2,math.min(0.8,speed))
+    drain_rate = math.max(0.5,math.min(2,tonumber(option("drainrate",1)) or 1))
+    screenfx = option("screenfx",false) == true
+    if slow_motion_overload then slow_motion_overload.configure(option) end
+    overload_tick=nil
+    if not screenfx then clear_effects() end
+    if slowmo_flag == 1 then
+        if set_speed(target_speed) then time_factor = target_speed else end_slowmo() end
+    end
+    previous_tick = nil
+end
+
+function on_game_start()
+    slowmo_flag = 0
+    time_factor = 1
+    pending = nil
+    previous_tick = nil
+    effects_active = false
+    overload_tick = nil
+    if slow_motion_overload then
+        slow_motion_overload.reset()
+        RegisterScriptCallback("save_state",slow_motion_overload.save_state)
+        RegisterScriptCallback("load_state",slow_motion_overload.load_state)
+    end
+    set_speed(1)
+    RegisterScriptCallback("on_option_change",loadsettings)
+    RegisterScriptCallback("actor_on_update",slowmo_on_update)
+    loadsettings()
+    log("Echo standalone 0.8.1 loaded")
+end
+
+function on_mcm_load()
+    return {id="bullettime",sh=true,gr={
+        {id="mobile_help",type="desc",text="ui_mcm_bullettime_mobile_help"},
+        {id="mobile_start",type="button",functor={request_start}},
+        {id="mobile_stop",type="button",functor={request_stop}},
+        {id="mobile_touch_help",type="desc",text="ui_mcm_bullettime_mobile_touch_help"},
+        {id="mobile_get_controller",type="button",functor_ui={function(gui) slow_motion_item.give_controller_ui(gui) end}},
+        {id="mobile_remove_controller",type="button",functor={function() slow_motion_item.remove_controller() end}},
+        {id="screenfx",type="check",val=1,def=false},
+        {id="drainrate",type="track",val=2,def=1,step=0.1,max=2,min=0.5},
+        {id="mintime",type="track",val=2,def=0.4,step=0.1,max=0.8,min=0.2},
+        {id="overload_help",type="desc",text="ui_mcm_bullettime_overload_help"},
+        {id="overload",type="check",val=1,def=true},
+        {id="overload_repeated",type="check",val=1,def=true},
+        {id="overload_count",type="track",val=2,def=4,step=1,min=2,max=15},
+        {id="overload_window",type="track",val=2,def=30,step=5,min=5,max=120},
+        {id="overload_sustained",type="check",val=1,def=true},
+        {id="overload_seconds",type="track",val=2,def=8,step=1,min=3,max=120},
+        {id="overload_recovery",type="track",val=2,def=20,step=1,min=2,max=120},
+        {id="overload_camera",type="check",val=1,def=true},
+        {id="overload_screen",type="check",val=1,def=true},
+        {id="overload_intensity",type="track",val=2,def=0.6,step=0.1,min=0.1,max=1}
+    }}
+end

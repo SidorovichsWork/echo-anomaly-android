@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='utf-8'?>
+<string_table>
+  <string id="ui_mcm_menu_bullettime">
+    <text>Регулятор резонанса «Эхо»</text>
+  </string>
+  <string id="ui_mcm_bullettime_mobile_help">
+    <text>Загрузите игру и используйте регулятор из быстрого слота лекарств/еды или включите его здесь, в MCM. Исходный мод Slow Motion не нужен.</text>
+  </string>
+  <string id="ui_mcm_bullettime_mobile_start">
+    <text>ВКЛЮЧИТЬ замедление</text>
+  </string>
+  <string id="ui_mcm_bullettime_mobile_stop">
+    <text>ВЫКЛЮЧИТЬ / обычная скорость</text>
+  </string>
+  <string id="ui_mcm_bullettime_mobile_start_desc">
+    <text>Включение после возврата в игру. Нужна выносливость.</text>
+  </string>
+  <string id="ui_mcm_bullettime_mobile_stop_desc">
+    <text>Обычная скорость после возврата в игру.</text>
+  </string>
+  <string id="ui_mcm_bullettime_screenfx">
+    <text>Визуальные эффекты</text>
+  </string>
+  <string id="ui_mcm_bullettime_screenfx_desc">
+    <text>Необязательные эффекты; изначально отключены для совместимости.</text>
+  </string>
+  <string id="ui_mcm_bullettime_drainrate">
+    <text>Расход выносливости</text>
+  </string>
+  <string id="ui_mcm_bullettime_drainrate_desc">
+    <text>Расход энергии при замедлении времени.</text>
+  </string>
+  <string id="ui_mcm_bullettime_mintime">
+    <text>Масштаб времени</text>
+  </string>
+  <string id="ui_mcm_bullettime_mintime_desc">
+    <text>0.4 соответствует примерно 40 процентам обычной скорости.</text>
+  </string>
+  <string id="ui_mcm_title_bullettime">
+    <text>Регулятор резонанса «Эхо»</text>
+  </string>
+  <string id="ui_mcm_bullettime_mobile_double_torch">
+    <text>Кнопка в инвентаре</text>
+  </string>
+  <string id="ui_mcm_bullettime_mobile_get_controller">
+    <text>Получить контроллер замедления</text>
+  </string>
+  <string id="ui_mcm_bullettime_mobile_remove_controller">
+    <text>Удалить контроллер перед удалением мода</text>
+  </string>
+  <string id="st_smm_slowmo_controller">
+    <text>Регулятор резонанса «Эхо»</text>
+  </string>
+  <string id="st_smm_slowmo_controller_descr">
+    <text>Экспериментальный регулятор, собранный учёными Янтаря после того, как найденный детектор дважды записал один аномальный разряд с разницей в долю секунды. Изолированный фрагмент «Бенгальского огня» и изменённая катушка ненадолго связывают оператора с этим резонансом. Что именно замедляется — окружающий мир или его восприятие — всё ещё спорный вопрос. Усталость сомнений не вызывает. Записи покинули бункер, и некоторые техники научились собирать схему. Назначьте в быстрый слот лекарств/еды: первое использование включает эффект, следующее выключает. Многоразовый; при работе расходует выносливость. Прибор продаёт только профессор Сахаров. Создать его нельзя. Для проверки его также можно получить через MCM. Чрезмерное использование вызывает временное резонансное недомогание. Настройки доступны в MCM.</text>
+  </string>
+  <string id="ui_mcm_bullettime_mobile_touch_help">
+    <text>Загрузите игру, получите регулятор здесь или купите его у профессора Сахарова и назначьте в быстрый слот лекарств/еды. Первое использование включает эффект, следующее выключает. Не удаляйте «Эхо», пока регулятор есть в сохранении.</text>
+  </string>
+  <string id="ui_smm_status_load_game">
+    <text>Сначала загрузите игру</text>
+  </string>
+  <string id="ui_smm_status_already_owned">
+    <text>Контроллер уже в рюкзаке</text>
+  </string>
+  <string id="ui_smm_status_missing_section">
+    <text>ОШИБКА: описание предмета не загружено</text>
+  </string>
+  <string id="ui_smm_status_requested">
+    <text>Запрошено: закройте MCM и проверьте рюкзак</text>
+  </string>
+  <string id="ui_smm_status_spawn_error">
+    <text>ОШИБКА: выдача не удалась; журнал сохранён</text>
+  </string>
+<string id="ui_mcm_bullettime_overload_help"><text>Перегрузка «Эха»: частое включение или длительная работа вызывают стандартные эффекты опьянения. По умолчанию: 4 включения за 30 секунд ИЛИ 8 секунд непрерывной работы; восстановление за 20 секунд после последнего срабатывания. Учитывается время игры. Повторное срабатывание продлевает восстановление, а длительная работа поддерживает симптомы. Камеру и экран можно отключить отдельно.</text></string><string id="ui_mcm_bullettime_overload"><text>Включить перегрузку</text></string><string id="ui_mcm_bullettime_overload_repeated"><text>Перегрузка от частых включений</text></string><string id="ui_mcm_bullettime_overload_count"><text>Число включений до перегрузки</text></string><string id="ui_mcm_bullettime_overload_window"><text>Интервал включений (секунды)</text></string><string id="ui_mcm_bullettime_overload_sustained"><text>Перегрузка от непрерывной работы</text></string><string id="ui_mcm_bullettime_overload_seconds"><text>Работа до перегрузки (секунды)</text></string><string id="ui_mcm_bullettime_overload_recovery"><text>Восстановление после срабатывания (секунды)</text></string><string id="ui_mcm_bullettime_overload_camera"><text>Покачивание камеры</text></string><string id="ui_mcm_bullettime_overload_screen"><text>Экранный эффект опьянения</text></string><string id="ui_mcm_bullettime_overload_intensity"><text>Сила экранного эффекта</text></string></string_table>

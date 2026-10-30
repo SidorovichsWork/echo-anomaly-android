@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+local-inputs/
+build/
+*.zip
+# Historical local-only builder experiments are not part of this release.
+tools/build_echo.py
+tools/build_mcm_fix.py
+payload/manifest.json

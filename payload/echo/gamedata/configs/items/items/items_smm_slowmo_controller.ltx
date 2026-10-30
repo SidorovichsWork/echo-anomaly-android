@@ -1,0 +1,37 @@
+; Add one new item; never modify ordinary medicine or food sections.
+[smm_slowmo_controller]:antirad
+inv_name = st_smm_slowmo_controller
+inv_name_short = st_smm_slowmo_controller
+description = st_smm_slowmo_controller_descr
+kind = i_medical
+cost = 35000
+quest_item = false
+inv_weight = 0.35
+icons_texture = ui\ui_icon_equipment
+inv_grid_width = 1
+inv_grid_height = 2
+inv_grid_x = 160
+inv_grid_y = 76
+max_uses = 1
+remove_after_use = false
+eat_health = 0
+eat_satiety = 0
+eat_power = 0
+eat_radiation = 0
+eat_alcohol = 0
+eat_sleepiness = 0
+eat_thirstiness = 0
+wounds_heal_perc = 0
+boost_time = 0
+boost_health_restore = 0
+boost_power_restore = 0
+boost_radiation_restore = 0
+boost_bleeding_restore = 0
+use_sound =
+use1_functor =
+use1_action_functor =
+use2_functor =
+use2_action_functor =
+
+; Existing world model; the custom art is the inventory icon.
+visual = dynamics\devices\dev_detector_1\dev_detector_1.ogf

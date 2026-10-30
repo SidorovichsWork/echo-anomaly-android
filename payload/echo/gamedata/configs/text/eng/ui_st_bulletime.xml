@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='utf-8'?>
+<string_table>
+  <string id="ui_mcm_menu_bullettime">
+    <text>Echo Resonance Regulator</text>
+  </string>
+  <string id="ui_mcm_bullettime_mobile_help">
+    <text>Load a game and use the regulator from a medical/food quick slot, or activate it here in MCM. Echo does not need the original Slow Motion mod.</text>
+  </string>
+  <string id="ui_mcm_bullettime_mobile_start">
+    <text>ACTIVATE slow motion</text>
+  </string>
+  <string id="ui_mcm_bullettime_mobile_stop">
+    <text>DEACTIVATE / restore normal speed</text>
+  </string>
+  <string id="ui_mcm_bullettime_mobile_start_desc">
+    <text>Queue activation, then return to the game. Requires stamina.</text>
+  </string>
+  <string id="ui_mcm_bullettime_mobile_stop_desc">
+    <text>Queue normal speed, then return to the game.</text>
+  </string>
+  <string id="ui_mcm_bullettime_screenfx">
+    <text>Screen effects</text>
+  </string>
+  <string id="ui_mcm_bullettime_screenfx_desc">
+    <text>Optional visual effects; disabled initially for compatibility.</text>
+  </string>
+  <string id="ui_mcm_bullettime_drainrate">
+    <text>Stamina drain</text>
+  </string>
+  <string id="ui_mcm_bullettime_drainrate_desc">
+    <text>Energy consumed while slow motion is active.</text>
+  </string>
+  <string id="ui_mcm_bullettime_mintime">
+    <text>Time factor</text>
+  </string>
+  <string id="ui_mcm_bullettime_mintime_desc">
+    <text>0.4 means approximately 40 percent of normal speed.</text>
+  </string>
+  <string id="ui_mcm_title_bullettime">
+    <text>Echo Resonance Regulator</text>
+  </string>
+  <string id="ui_mcm_bullettime_mobile_double_torch">
+    <text>Inventory control</text>
+  </string>
+  <string id="ui_mcm_bullettime_mobile_get_controller">
+    <text>Get slow-motion controller</text>
+  </string>
+  <string id="ui_mcm_bullettime_mobile_remove_controller">
+    <text>Remove controller before uninstalling</text>
+  </string>
+  <string id="st_smm_slowmo_controller">
+    <text>Echo Resonance Regulator</text>
+  </string>
+  <string id="st_smm_slowmo_controller_descr">
+    <text>An experimental regulator assembled by the scientists at Yantar after a salvaged detector recorded the same anomalous discharge twice, a fraction of a second apart. A caged Sparkler fragment and a modified detection coil briefly couple the operator to that resonance. Whether the world slows down or the mind races ahead remains disputed. The fatigue is not. The field notes leaked out of the bunker; a few technicians now know how to rebuild the circuit. Assign to a medical/food quick slot: use once to activate and again to deactivate. Reusable; drains stamina while active. Only Professor Sakharov sells this device. It cannot be crafted. MCM can also grant it for testing. Excessive use causes temporary resonance sickness. Configure it in MCM.</text>
+  </string>
+  <string id="ui_mcm_bullettime_mobile_touch_help">
+    <text>Load a game, obtain the regulator here or buy it from Professor Sakharov, and assign it to a medical/food quick slot. Use once to activate and again to deactivate. Keep Echo installed while your save contains the regulator.</text>
+  </string>
+  <string id="ui_smm_status_load_game">
+    <text>Load a game first</text>
+  </string>
+  <string id="ui_smm_status_already_owned">
+    <text>Controller already in backpack</text>
+  </string>
+  <string id="ui_smm_status_missing_section">
+    <text>ERROR: item definition not loaded</text>
+  </string>
+  <string id="ui_smm_status_requested">
+    <text>Requested: close MCM and check backpack</text>
+  </string>
+  <string id="ui_smm_status_spawn_error">
+    <text>ERROR: delivery failed; diagnostic saved</text>
+  </string>
+<string id="ui_mcm_bullettime_overload_help"><text>Echo overload: repeated activation or prolonged use causes the vanilla drunken camera and screen effects. Defaults: 4 activations within 30 seconds OR 8 seconds continuously; recovery 20 seconds after the last trigger. Times count gameplay seconds. Each trigger refreshes recovery; prolonged use keeps symptoms active. Camera and screen can be disabled separately.</text></string><string id="ui_mcm_bullettime_overload"><text>Enable overload</text></string><string id="ui_mcm_bullettime_overload_repeated"><text>Overload from repeated activation</text></string><string id="ui_mcm_bullettime_overload_count"><text>Activations to trigger overload</text></string><string id="ui_mcm_bullettime_overload_window"><text>Activation window (seconds)</text></string><string id="ui_mcm_bullettime_overload_sustained"><text>Overload from continuous use</text></string><string id="ui_mcm_bullettime_overload_seconds"><text>Continuous use before overload (seconds)</text></string><string id="ui_mcm_bullettime_overload_recovery"><text>Recovery after last trigger (seconds)</text></string><string id="ui_mcm_bullettime_overload_camera"><text>Drunken camera sway</text></string><string id="ui_mcm_bullettime_overload_screen"><text>Alcohol screen effect</text></string><string id="ui_mcm_bullettime_overload_intensity"><text>Screen effect intensity</text></string></string_table>
