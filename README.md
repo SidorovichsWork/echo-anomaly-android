@@ -43,7 +43,7 @@ The common icon atlas and Sakharov trade configuration are conflict points: load
 
 ## Validation and support
 
-Echo 0.8.0 was confirmed working in-game by the tester. Public **0.8.1** keeps its gameplay and replaces the two third-party sounds with newly synthesized original audio. The earlier core passed 57 Lua 5.1 checks. The new standalone MCM shim passed 22 checks against the original MCM handlers in both startup orders; **device testing of these two public packages is still pending**. No universal phone, port or modpack compatibility is claimed. See [validation notes](VALIDATION.md).
+Echo 0.8.0 was confirmed working in-game by the tester. Public **0.8.1** keeps its gameplay and replaces the two third-party sounds with newly synthesized original audio. The earlier core passed 57 Lua 5.1 checks. The new standalone MCM shim passed 22 checks against the original MCM handlers in both startup orders; **the user confirmed both public packages working in-game on 2026-10-29**. No universal phone, port or modpack compatibility is claimed. See [validation notes](VALIDATION.md).
 
 [Report an issue](https://github.com/SidorovichsWork/echo-anomaly-android/issues) with your port version, addon versions, load order and relevant error text. Remove personal information from logs before sharing them.
 
